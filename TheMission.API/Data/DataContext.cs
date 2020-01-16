@@ -8,5 +8,13 @@ namespace TheMission.API.Data
         public DataContext(DbContextOptions<DataContext> options) : base(options){}
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Skill> Skills { get; set; }
+        public DbSet<UserSkill> UserSkills { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<UserSkill>()
+                .HasKey(c => new {c.UserId, c.SkillId});
+        }
     }
 }

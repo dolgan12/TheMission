@@ -13,6 +13,10 @@ namespace TheMission.API.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Entity<Skill>()
+                .HasIndex(s => s.SkillName)
+                .IsUnique();
+
             builder.Entity<UserSkill>()
                 .HasKey(c => new {c.UserId, c.SkillId});
         }

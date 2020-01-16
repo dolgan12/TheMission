@@ -1,0 +1,30 @@
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+  <a class="navbar-brand" href="#">The Mission</a>
+
+
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">My Skills</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Check Skills</a>
+      </li>
+    </ul>
+
+    <div *ngIf="loggedIn()" class="dropdown">
+      <a class="dropdown-toggle text-light">
+        Welcome User
+      </a>
+
+      <div class="dropdown-menu">
+        <a href="#" class="dropdown-item" (click)="logout()"><i class="fa fa-sign-out">Logout</i></a>
+        
+      </div>
+    </div>
+
+    <form *ngIf="!loggedIn()" #loginForm="ngForm" class="form-inline my-2 my-lg-0" (ngSubmit)="login()">
+      <input class="form-control mr-sm-2" type="text" required name="username" placeholder="Username" [(ngModel)]="model.username">
+      <input class="form-control mr-sm-2" type="password" required name="password" placeholder="Password" [(ngModel)]="model.password">
+      <button class="btn btn-success my-2 my-sm-0" type="submit" [disabled]="!loginForm.valid">Login</button>
+    </form>
+</nav>

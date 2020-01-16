@@ -1,0 +1,18 @@
+<div class="container mt-5">
+    <div class="text-center" *ngIf="!registerMode">
+      <h1>Register to log your skills</h1>
+      <p class="lead">Come on in to log your skills and see how they match against others.</p>
+      <div class="text-center">
+        <button class="btn btn-primary btn-lg" (click)="registerToggle()">Register</button>
+  
+      </div>
+    </div>
+  </div>
+  
+  <div class="container" *ngIf="registerMode">
+    <div class="row justify-content-center">
+      <div class="col-4">
+  <app-register (cancelRegister)="cancelRegisterMode($event)"></app-register>
+      </div>
+    </div>
+  </div>

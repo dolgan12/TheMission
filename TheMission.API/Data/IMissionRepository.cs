@@ -11,8 +11,8 @@ namespace TheMission.API.Data
          void Delete<T>(T entity) where T: class;
          Task<bool> SaveAll();
          Task<IEnumerable<User>> GetUsers();
-         Task<User> GetUser(int userId);
+         Task<UserWithSkillsDto> GetUser(int userId);
          Task<IEnumerable<Skill>> GetSkills();
-         Task<SkillWithUsers> GetSkill(int id);
+         Task<SkillWithUsersDto> GetSkill(int id);
     }
 }

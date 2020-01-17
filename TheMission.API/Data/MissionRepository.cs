@@ -27,15 +27,25 @@ namespace TheMission.API.Data
             _context.Remove(entity);
         }
 
-        public async Task<User> GetUser(int userId)
+        public async Task<UserWithSkillsDto> GetUser(int userId)
         {
 
-           var user = await _context.Users
-            .Include(s => s.UserSkills)
-            .ThenInclude(sk => sk.Skill)
-            .FirstOrDefaultAsync(u => u.UserId == userId);
+           var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId == userId);
+
+           var userToReturn = _mapper.Map<UserWithSkillsDto>(user);
+
+           var skills = (from u in _context.Users
+                        join us in _context.UserSkills on u.UserId equals us.UserId
+                        join sk in _context.Skills on us.SkillId equals sk.SkillId
+                        where u.UserId == userId
+                        select new SkillsAndScoreDto {
+                            SkillName = sk.SkillName,
+                            Score = us.Score
+                        })
+                        .ToListAsync();
+            userToReturn.Skills = await skills;
            
-            return user;
+            return userToReturn;
         }
 
         public async Task<IEnumerable<Skill>> GetSkills()
@@ -43,11 +53,11 @@ namespace TheMission.API.Data
             var skills = await _context.Skills.ToListAsync();
             return skills;
         }
-        public async Task<SkillWithUsers> GetSkill(int skillId)
+        public async Task<SkillWithUsersDto> GetSkill(int skillId)
         {
             var skill = await _context.Skills.FirstOrDefaultAsync(s => s.SkillId == skillId);
             
-            var skillToReturn = _mapper.Map<SkillWithUsers>(skill);
+            var skillToReturn = _mapper.Map<SkillWithUsersDto>(skill);
 
 
             var scores = (from sk in _context.Skills

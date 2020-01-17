@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace TheMission.API.Models.Dtos
 {
-    public class SkillWithUsers
+    public class SkillWithUsersDto
     {
         public int SkillId { get; set; }
         public string SkillName { get; set; }

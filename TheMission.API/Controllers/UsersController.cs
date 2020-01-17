@@ -36,10 +36,10 @@ namespace TheMission.API.Controllers
         {
             var user = await _repo.GetUser(userId);
 
-            var userToReturn = _mapper.Map<UserForListDto>(user);
+           // var userToReturn = _mapper.Map<UserForListDto>(user);
                 
 
-            return Ok(userToReturn);
+            return Ok(user);
         }
     }
 }

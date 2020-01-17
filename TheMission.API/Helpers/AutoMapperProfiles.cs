@@ -8,20 +8,13 @@ namespace TheMission.API.Helpers
     {
         public AutoMapperProfiles()
         {
-            CreateMap<User, UserForListDto>()
-                .ForMember(
-                    dest => dest.UserSkills,
-                    opt => opt.MapFrom(src => src.UserSkills)
-                );
+            CreateMap<User, UserForListDto>();
                 
-            CreateMap<Skill, SkillForListDto>()
-                .ForMember(
-                    dest => dest.UserSkills,
-                    opt => opt.MapFrom(src => src.UserSkills)
-                );
+            CreateMap<Skill, SkillForListDto>();
             CreateMap<UserSkill, UserSkillForListDto>();
             CreateMap<User, UserForSkillDto>();
-            CreateMap<Skill, SkillWithUsers>();
+            CreateMap<Skill, SkillWithUsersDto>();
+            CreateMap<User, UserWithSkillsDto>();
         }
     }
 }

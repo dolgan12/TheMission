@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TheMission.API.Models;
+using TheMission.API.Models.Dtos;
 
 namespace TheMission.API.Data
 {
@@ -11,5 +12,7 @@ namespace TheMission.API.Data
          Task<bool> SaveAll();
          Task<IEnumerable<User>> GetUsers();
          Task<User> GetUser(int userId);
+         Task<IEnumerable<Skill>> GetSkills();
+         Task<SkillWithUsers> GetSkill(int id);
     }
 }

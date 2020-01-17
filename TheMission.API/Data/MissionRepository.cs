@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using TheMission.API.Models;
@@ -25,9 +26,46 @@ namespace TheMission.API.Data
 
         public async Task<User> GetUser(int userId)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId == userId);
+            //var user = await _context.Users.Include(s => s.UserSkills).FirstOrDefaultAsync(u => u.UserId == userId);
+
+           var user = await _context.Users
+            .Include(s => s.UserSkills)
+            .ThenInclude(sk => sk.Skill)
+            .FirstOrDefaultAsync(u => u.UserId == userId);
            
             return user;
+        }
+
+        public async Task<IEnumerable<Skill>> GetSkills()
+        {
+            var skills = await _context.Skills.ToListAsync();
+            return skills;
+        }
+        public async Task<SkillWithUsers> GetSkill(int skillId)
+        {
+            // var skill = await _context.Skills
+            // .Include(sk => sk.UserSkills)
+            // .ThenInclude(u => u.User)
+            // .FirstOrDefaultAsync(s => s.SkillId == skillId);
+            var skill = await _context.Skills.FirstOrDefaultAsync(s => s.SkillId == skillId);
+            
+            var skillToReturn = new SkillWithUsers();
+            skillToReturn.SkillId = skill.SkillId;
+            skillToReturn.SkillName = skill.SkillName;
+
+            var scores = (from sk in _context.Skills
+                        join us in _context.UserSkills on sk.SkillId equals us.SkillId
+                        join u in _context.Users on us.UserId equals u.UserId
+                        where sk.SkillId == skillId
+                        select new UserScore {
+                           UserName = u.Username,
+                           Score = us.Score
+                        })
+                        .ToListAsync();
+            
+            skillToReturn.UserScores = await scores;
+
+            return skillToReturn;
         }
 
         public async Task<IEnumerable<User>> GetUsers()

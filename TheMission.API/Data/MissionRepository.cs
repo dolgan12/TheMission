@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using TheMission.API.Models;
 using TheMission.API.Models.Dtos;
@@ -10,9 +11,11 @@ namespace TheMission.API.Data
     public class MissionRepository : IMissionRepository
     {
         private readonly DataContext _context;
-        public MissionRepository(DataContext context)
+        private readonly IMapper _mapper;
+        public MissionRepository(DataContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
         public void Add<T>(T entity) where T : class
         {
@@ -26,7 +29,6 @@ namespace TheMission.API.Data
 
         public async Task<User> GetUser(int userId)
         {
-            //var user = await _context.Users.Include(s => s.UserSkills).FirstOrDefaultAsync(u => u.UserId == userId);
 
            var user = await _context.Users
             .Include(s => s.UserSkills)
@@ -43,15 +45,10 @@ namespace TheMission.API.Data
         }
         public async Task<SkillWithUsers> GetSkill(int skillId)
         {
-            // var skill = await _context.Skills
-            // .Include(sk => sk.UserSkills)
-            // .ThenInclude(u => u.User)
-            // .FirstOrDefaultAsync(s => s.SkillId == skillId);
             var skill = await _context.Skills.FirstOrDefaultAsync(s => s.SkillId == skillId);
             
-            var skillToReturn = new SkillWithUsers();
-            skillToReturn.SkillId = skill.SkillId;
-            skillToReturn.SkillName = skill.SkillName;
+            var skillToReturn = _mapper.Map<SkillWithUsers>(skill);
+
 
             var scores = (from sk in _context.Skills
                         join us in _context.UserSkills on sk.SkillId equals us.SkillId

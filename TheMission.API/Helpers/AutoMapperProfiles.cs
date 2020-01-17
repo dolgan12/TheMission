@@ -21,6 +21,7 @@ namespace TheMission.API.Helpers
                 );
             CreateMap<UserSkill, UserSkillForListDto>();
             CreateMap<User, UserForSkillDto>();
+            CreateMap<Skill, SkillWithUsers>();
         }
     }
 }

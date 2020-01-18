@@ -1,0 +1,60 @@
+<div class="container">
+    <h3>SKILLS</h3>
+    <div class="row">
+    <form class="form-inline mt-2 my-lg-0" (ngSubmit)="skillAdd()" [formGroup]="skillForm">
+      
+      <input type="text"
+       formControlName="skillName"
+       [typeahead]="skillList"
+       typeaheadOptionField="skillName"
+       [typeaheadMinLength]="1"
+       class="form-control mr-sm-5" placeholder="Skill">
+
+      <div class="form-group">
+
+        <div class="btn-group" btnRadioGroup formControlName="score">
+          <label btnRadio="0" class="btn btn-secondary mr-sm-2"
+                tabindex="0" role="button">0</label>
+          <label btnRadio="1" class="btn btn-secondary mr-sm-2"
+                tabindex="0" role="button">1</label>
+          <label btnRadio="2" class="btn btn-secondary mr-sm-2"
+                tabindex="0" role="button">2</label>
+          <label btnRadio="3" class="btn btn-secondary mr-sm-2"
+                tabindex="0" role="button">3</label>
+          <label btnRadio="4" class="btn btn-secondary mr-sm-2"
+                tabindex="0" role="button">4</label>
+          <label btnRadio="5" class="btn btn-secondary mr-sm-2"
+                tabindex="0" role="button">5</label>
+        </div>
+      </div>
+      
+          
+      <button class="btn btn-success float-right" [disabled]="!skillForm.valid">Add Skill</button>
+    </form>
+
+  </div>
+    <div class="dropdown-divider"></div>
+  <div class="row flex-direction">
+    <table class="table table-striped table-sm align-items-center">
+      <tbody>
+        <tr *ngFor="let skill of user.skills">
+        <td scope="col" class="">{{skill.skillName}}</td>
+        <td scope="col" class="text-right">
+            <div class="btn-group text-right mt-1" >
+              <label class="btn btn-secondary mr-2 score-label" [ngClass]="{'active': skill.score == 0}">0</label>
+              <label class="btn btn-secondary mr-2 score-label" [ngClass]="{'active': skill.score == 1}">1</label>
+              <label class="btn btn-secondary mr-2 score-label" [ngClass]="{'active': skill.score == 2}">2</label>
+              <label class="btn btn-secondary mr-2 score-label" [ngClass]="{'active': skill.score == 3}">3</label>
+              <label class="btn btn-secondary mr-2 score-label" [ngClass]="{'active': skill.score == 4}">4</label>
+              <label class="btn btn-secondary mr-2 score-label" [ngClass]="{'active': skill.score == 5}">5</label>
+            </div>
+        </td>
+        <td scope="col" class=" text-center">
+          <button class="btn btn-sm btn-danger mt-2"><i class="fa fa-remove" (click)="removeSkill(skill)"></i></button>
+        </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+</div>

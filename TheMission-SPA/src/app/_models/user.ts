@@ -1,7 +1,7 @@
 import { Skill } from './skill';
 
 export interface User {
-    userid: number;
+    userId: number;
     username: string;
     skills?: Skill[];
 }

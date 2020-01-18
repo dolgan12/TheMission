@@ -14,5 +14,9 @@ namespace TheMission.API.Data
          Task<UserWithSkillsDto> GetUser(int userId);
          Task<IEnumerable<Skill>> GetSkills();
          Task<SkillWithUsersDto> GetSkill(int id);
+
+         Task<bool> AddSkill(SkillToAddDto skill);
+         Task<UserSkill> GetUserSkill(int userId, string skillName);
+         Task<IEnumerable<UserScore>> GetUsersWithSkill(int skillId);
     }
 }

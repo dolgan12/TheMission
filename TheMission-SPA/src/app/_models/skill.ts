@@ -1,4 +1,6 @@
 export interface Skill {
-    skillid: number;
-    skillname: string;
+    skillId?: number;
+    skillName: string;
+    score?: number;
+    userId?: number;
 }

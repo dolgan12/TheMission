@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -31,6 +32,19 @@ namespace TheMission.API.Controllers
             return Ok(skillsToReturn);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> AddSkill(SkillToAddDto skillToAdd)
+        {
+            var result = await _repo.AddSkill(skillToAdd);
+
+            if (!result)
+            {
+                return BadRequest("Failed to save skill");
+            }
+            
+            return Ok(skillToAdd);
+        }
+
 
         [HttpGet("{skillId}")]
         public async Task<IActionResult> GetSkill(int skillId)
@@ -41,7 +55,47 @@ namespace TheMission.API.Controllers
 
             return Ok(skillFromRepo);
         }
+        [HttpGet("all/{skillId}")]
+        public async Task<IActionResult> GetUsersForSkill(int skillId) 
+        {
+            var userList = await _repo.GetUsersWithSkill(skillId);
 
+            if (userList == null)
+            {
+                return BadRequest("No user has that skill yet");
+            }
+
+            return Ok(userList);
+        }
+
+        [HttpPost("remove")]
+        public async Task<IActionResult> DeleteUserSkill(UserSkillToRemoveDto userSkilltoRemove)
+        {
+            if (userSkilltoRemove.UserId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+            {
+                return Unauthorized();
+            }
+
+            var userSkill = await _repo.GetUserSkill(userSkilltoRemove.UserId, userSkilltoRemove.SkillName);
+
+            if (userSkill == null)
+            {
+                return BadRequest();
+            }
+
+            _repo.Delete(userSkill);
+
+            if (await _repo.SaveAll())
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest("Unable to remove the skill");
+            }
+
+
+        }
 
     }
 }

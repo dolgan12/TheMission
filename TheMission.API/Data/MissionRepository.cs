@@ -80,6 +80,56 @@ namespace TheMission.API.Data
             var users = await _context.Users.ToListAsync();
             return users;
         }
+        
+        public async Task<bool> AddSkill(SkillToAddDto skillToAdd)
+        {
+            var skill = await _context.Skills.FirstOrDefaultAsync(s => s.SkillName == skillToAdd.SkillName);
+            if (skill == null)
+            {
+                var newSkill = new Skill();
+                newSkill.SkillName = skillToAdd.SkillName;
+                this.Add<Skill>(newSkill);
+                await SaveAll();
+
+                skill = await _context.Skills.FirstOrDefaultAsync(s => s.SkillName == skillToAdd.SkillName);
+            }
+            
+            var userSkill = await _context.UserSkills.FirstOrDefaultAsync(us => us.UserId == skillToAdd.UserId && us.SkillId == skill.SkillId);
+
+            if (userSkill != null)
+            {
+                return false;
+            }
+            var newUserSkill = new UserSkill();
+            newUserSkill.SkillId = skill.SkillId;
+            newUserSkill.UserId = skillToAdd.UserId;
+            newUserSkill.Score = skillToAdd.SkillScore;
+            
+            this.Add<UserSkill>(newUserSkill);
+
+            return await this.SaveAll();
+
+        }
+
+        public async Task<UserSkill> GetUserSkill(int userId, string skillName)
+        {
+            var skillFromRepo = await _context.Skills.FirstOrDefaultAsync(s => s.SkillName == skillName);
+            return await _context.UserSkills.FirstOrDefaultAsync(us => us.UserId == userId && us.SkillId == skillFromRepo.SkillId);
+        }
+
+        public async Task<IEnumerable<UserScore>> GetUsersWithSkill(int skillId)
+        {
+            var userSkills = (from us in _context.UserSkills
+                            join u in _context.Users on us.UserId equals u.UserId
+                            where us.SkillId == skillId
+                            orderby us.Score
+                            select new UserScore {
+                           UserName = u.Username,
+                           Score = us.Score
+                        }).ToListAsync();
+
+            return await userSkills;
+        }
 
         public async Task<bool> SaveAll()
         {

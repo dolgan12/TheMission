@@ -1,0 +1,15 @@
+<div class="container">
+  <form class="form-inline mt-2 my-lg-0" (ngSubmit)="skillSearch()" #skillSearchForm="ngForm" >
+    <input type="search"
+        [(ngModel)]="selectedSkill"
+        name="selectedSkill"
+        [typeahead]="skillList"
+        [isAnimated]="true"
+        [adaptivePosition]="true"
+        typeaheadOptionField="skillName"
+        [typeaheadMinLength]="1"
+        class="form-control mr-sm-5" placeholder="search" autocomplete="off">
+
+        <button class="btn btn-success float-right" [disabled]="!skillSearchForm.valid">Search Skill</button>
+  </form>
+</div>

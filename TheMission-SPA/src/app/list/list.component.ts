@@ -50,7 +50,7 @@ export class ListComponent implements OnInit {
       console.log(users);
     }, error => {
       this.alertify.error(error);
-    })
+    });
 
     this.selectedSkill = null;
   }

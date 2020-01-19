@@ -1,15 +1,40 @@
 <div class="container">
-  <form class="form-inline mt-2 my-lg-0" (ngSubmit)="skillSearch()" #skillSearchForm="ngForm" >
-    <input type="search"
-        [(ngModel)]="selectedSkill"
-        name="selectedSkill"
-        [typeahead]="skillList"
-        [isAnimated]="true"
-        [adaptivePosition]="true"
-        typeaheadOptionField="skillName"
-        [typeaheadMinLength]="1"
-        class="form-control mr-sm-5" placeholder="search" autocomplete="off">
+  <div class="row mt-4">
+    <form class="form-inline mt-2 my-lg-0" (ngSubmit)="skillSearch()" #skillSearchForm="ngForm" >
+      <input type="search"
+          [(ngModel)]="selectedSkill"
+          name="selectedSkill"
+          [typeahead]="skillList"
+          [isAnimated]="true"
+          [adaptivePosition]="true"
+          typeaheadOptionField="skillName"
+          [typeaheadMinLength]="1"
+          required
+          class="form-control mr-sm-5" placeholder="search" autocomplete="off">
 
-        <button class="btn btn-success float-right" [disabled]="!skillSearchForm.valid">Search Skill</button>
-  </form>
+          <button class="btn btn-success float-right" [disabled]="!skillSearchForm.valid">Search Skill</button>
+    </form>
+  </div>
+  <div class="row mt-4">
+    <h3 *ngIf="skillToShow != null">{{skillToShow.skillName}}</h3>
+
+    <table class="table table-striped table-sm align-items-center" *ngIf="skillToShow != null">
+      <tbody>
+        <tr *ngFor="let skill of skillToShow.users">
+        <td scope="col" class="align-middle font-weight-bold">{{skill.userName  | titlecase}}</td>
+        <td scope="col" class="text-right">
+            <div class="btn-group text-right mt-1" >
+              <label class="btn btn-secondary mr-2 score-label" [ngClass]="{'active': skill.score == 0}">0</label>
+              <label class="btn btn-secondary mr-2 score-label" [ngClass]="{'active': skill.score == 1}">1</label>
+              <label class="btn btn-secondary mr-2 score-label" [ngClass]="{'active': skill.score == 2}">2</label>
+              <label class="btn btn-secondary mr-2 score-label" [ngClass]="{'active': skill.score == 3}">3</label>
+              <label class="btn btn-secondary mr-2 score-label" [ngClass]="{'active': skill.score == 4}">4</label>
+              <label class="btn btn-secondary mr-2 score-label" [ngClass]="{'active': skill.score == 5}">5</label>
+            </div>
+        </td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
 </div>

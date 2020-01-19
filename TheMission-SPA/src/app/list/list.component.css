@@ -1,0 +1,20 @@
+label.btn.btn-secondary.active {
+    background: #537AE8;
+    color: whitesmoke;
+}
+
+label.btn.btn-secondary:hover {
+    background: #537AE8;
+    color: whitesmoke;
+}
+label.btn.btn-secondary.score-label.active:hover {
+    cursor: default;
+    background: #537AE8;
+    color: whitesmoke;
+}
+
+label.btn.btn-secondary.score-label:hover {
+    cursor: default;
+    background-image: linear-gradient(white, #e9ecef 60%, #dde2e6);
+    color: #495057;
+}

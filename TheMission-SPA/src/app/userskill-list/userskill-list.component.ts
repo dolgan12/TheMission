@@ -50,16 +50,28 @@ export class UserskillListComponent implements OnInit {
   skillAdd() {
     const name: string = this.skillForm.value.skillName;
     const skillScore: number = this.skillForm.value.score;
+    let addskill = true;
 
-    this.userService.addSkill(name, this.user.userId, skillScore)
+    this.user.skills.forEach(skill => {
+      if (skill.skillName === name) {
+        addskill = false;
+        this.alertify.error('You already have that skill');
+        return;
+      }
+    });
+
+    if (addskill){
+      this.userService.addSkill(name, this.user.userId, skillScore)
       .subscribe(res => {
         this.user.skills.push({
           skillName: name,
           score: skillScore
         });
       }, error => {
-        this.alertify.error('Failed to add skill');
+        this.alertify.error(error);
       });
+    }
+
     this.skillForm.reset();
   }
 

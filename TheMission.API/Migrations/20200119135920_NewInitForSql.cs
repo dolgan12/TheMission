@@ -1,10 +1,9 @@
 ﻿using System;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TheMission.API.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class NewInitForSql : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,8 +12,7 @@ namespace TheMission.API.Migrations
                 columns: table => new
                 {
                     SkillId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     SkillName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -27,8 +25,7 @@ namespace TheMission.API.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Username = table.Column<string>(nullable: true),
                     PasswordHash = table.Column<byte[]>(nullable: true),
                     PasswordSalt = table.Column<byte[]>(nullable: true)
@@ -62,6 +59,13 @@ namespace TheMission.API.Migrations
                         principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Skills_SkillName",
+                table: "Skills",
+                column: "SkillName",
+                unique: true,
+                filter: "[SkillName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserSkills_SkillId",

@@ -31,9 +31,10 @@ namespace TheMission.API
 
         public IConfiguration Configuration { get; }
 
-        public void ConfigureDevelopentServices(IServiceCollection services)
+        public void ConfigureDevelopmentServices(IServiceCollection services)
         {
-            services.AddDbContext<DataContext>(x => x.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+            //services.AddDbContext<DataContext>(x => x.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<DataContext>(x => x.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             ConfigureServices(services);
         }
@@ -92,10 +93,11 @@ namespace TheMission.API
                         }
                     });
                 });
+
+                app.UseHsts();
             }
 
-            // app.UseHttpsRedirection();
-
+            app.UseDeveloperExceptionPage();
             app.UseRouting();
             
             app.UseAuthentication();
@@ -103,11 +105,15 @@ namespace TheMission.API
 
             app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapFallbackToController("Index", "Fallback");
             });
         }
     }

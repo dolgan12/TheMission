@@ -35,6 +35,10 @@ namespace TheMission.API.Controllers
         [HttpPost]
         public async Task<IActionResult> AddSkill(SkillToAddDto skillToAdd)
         {
+            if (skillToAdd.UserId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+            {
+                return Unauthorized();
+            }
             var result = await _repo.AddSkill(skillToAdd);
 
             if (!result)

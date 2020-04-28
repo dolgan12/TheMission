@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-
+// Test
 namespace TheMission.API.Models
 {
     public class UserSkill
